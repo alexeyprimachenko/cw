@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Git') {
       steps {
-        git([url: 'https://alexprimachenko@github.com/alexprimachenko/cw.git', branch: 'main'])
+        git([url: 'https://alexeyprimachenko@github.com/alexeyprimachenko/cw.git', branch: 'main'])
       }
     }
     stage('Make image') {
