@@ -1,0 +1,41 @@
+---
+- hosts: alex
+  become: yes
+  become_method: yes
+
+  tasks:
+  - name: Update 1
+    command: docker exec ubuntu bash -c 'apt -y update'
+
+  - name: Install docker-py
+    pip:
+      name: docker-py
+
+  - name: Install required system packages
+    command: docker exec ubuntu bash -c 'apt-get -y install apt-transport-https ca-certificates curl gnupg lsb-release'
+
+  - name: Add Docker GPG apt key
+    command: docker exec ubuntu bash -c 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -'
+
+  - name: Add Docker DEB
+    command: docker exec ubuntu bash -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null'
+
+  - name: Update 2
+    command: docker exec ubuntu bash -c 'apt -y update'
+
+  - name: Install pip
+    command: docker exec ubuntu bash -c 'apt -y install python3-pip'
+
+  - name: Install Docker Compose
+    command: docker exec ubuntu bash -c 'pip3 install docker-compose'
+
+  - name: Copy file with owner and permissions
+    ansible.builtin.copy:
+      src: docker-compose.yml
+      dest: /root/
+      owner: root
+      group: root
+      mode: '0644'
+ 
+  - name: Docker-compose start
+    command: docker exec ubuntu bash -c 'docker-compose'

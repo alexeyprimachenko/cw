@@ -1,0 +1,6 @@
+version: "3"
+services:
+  httpd:
+    image: cw/main
+    ports:
+      - 80:80

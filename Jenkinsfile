@@ -28,6 +28,12 @@ pipeline {
         }
       }
     }
+    stage("Release") {
+      steps {
+        sh "ansible-playbook coursework.yml"
+        sleep 60
+      }
+    }
     stage('Remove Unused docker image') {
       steps{
         sh "docker rmi $imagename:$BUILD_NUMBER"
